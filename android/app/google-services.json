@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "7903887033",
+    "project_id": "currentaffair-87a45",
+    "storage_bucket": "currentaffair-87a45.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:7903887033:android:d53a47d31ac20254772568",
+        "android_client_info": {
+          "package_name": "com.example.current_affairs"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCac0-NEZsIe_W_HGF47om127bnOo1fQsc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
