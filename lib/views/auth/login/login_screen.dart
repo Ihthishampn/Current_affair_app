@@ -1,8 +1,27 @@
+import 'package:current_affairs/views/auth/login/widgets/forgetPass_button.dart';
+import 'package:current_affairs/views/auth/login/widgets/login_button.dart';
+import 'package:current_affairs/views/auth/login/widgets/newHereRow.dart';
+import 'package:current_affairs/views/auth/login/widgets/passwoed_textField_custom.dart';
+import 'package:current_affairs/views/auth/login/widgets/textField_custom.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    passController.dispose();
+    emailController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,188 +85,24 @@ class LoginScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    TextField(
-                      style: TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        labelText: 'Email',
-                        labelStyle: TextStyle(color: Colors.white70),
-                        hintText: 'Enter your email',
-                        hintStyle: TextStyle(color: Colors.white38),
-                        prefixIcon: Icon(
-                          Icons.email_outlined,
-                          color: Colors.white70,
-                        ),
-                        filled: true,
-                        fillColor: Colors.grey[850],
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: Colors.transparent),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                            width: 1.5,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: Colors.transparent),
-                        ),
-                      ),
-                    ),
+                    // email
+                    TextfieldCustomEmail(email: emailController,),
                     SizedBox(height: verticalSpacing),
-                    TextField(
-                      obscureText: true,
-                      style: TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        labelStyle: TextStyle(color: Colors.white70),
-                        hintText: 'Enter your password',
-                        hintStyle: TextStyle(color: Colors.white38),
-                        prefixIcon: Icon(
-                          Icons.lock_outline,
-                          color: Colors.white70,
-                        ),
-                        suffixIcon: Icon(
-                          Icons.visibility_outlined,
-                          color: Colors.white38,
-                        ),
-                        filled: true,
-                        fillColor: Colors.grey[850],
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: Colors.transparent),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                            width: 1.5,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: Colors.transparent),
-                        ),
-                      ),
-                    ),
+                    // password
+                    PasswordTextfieldCustom(pass: passController,),
                     SizedBox(height: verticalSpacing * 0.7),
-                    Align(
-                      alignment: Alignment.centerRight,
-                      child: TextButton(
-                        onPressed: () {},
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          minimumSize: const Size(0, 0),
-                        ),
-                        child: Text(
-                          'Forgot Password?',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontWeight: FontWeight.w500,
-                            fontSize: isSmallScreen ? 13 : 14,
-                          ),
-                        ),
-                      ),
-                    ),
+                    // forget pass button
+                    ForgetpassButton(),
                     SizedBox(height: verticalSpacing),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.black,
-                        padding: EdgeInsets.symmetric(
-                          vertical: isSmallScreen ? 14 : 16,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        elevation: 2,
-                      ),
-                      child: Text(
-                        'Login',
-                        style: TextStyle(
-                          fontSize: isSmallScreen ? 15 : 17,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 0.4,
-                        ),
-                      ),
-                    ),
+                    // login
+                    LoginButton(emailc: emailController, passc: passController),
                     SizedBox(height: verticalSpacing * 1.2),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Divider(
-                            color: const Color.fromARGB(255, 133, 132, 132),
-                            thickness: 1,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: Text(
-                            'OR',
-                            style: TextStyle(
-                              color: Colors.white38,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Divider(
-                            color: const Color.fromARGB(255, 133, 132, 132),
-                            thickness: 1,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: verticalSpacing * 1.2),
-                    SizedBox(
-                      height: 38, // smaller height
-                      child: SignInButton(
-                        Buttons.Google,
-                        text: "Sign in with Google",
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 2,
-                        ),
-                        onPressed: () {},
-                      ),
-                    ),
                   ],
                 ),
               ),
               SizedBox(height: verticalSpacing * 1.4),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'New here? ',
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.9),
-                      fontSize: isSmallScreen ? 14 : 15,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      minimumSize: const Size(0, 0),
-                    ),
-                    child: Text(
-                      'Sign up',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: isSmallScreen ? 14 : 15,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              //new here row
+              Newhererow(),
               SizedBox(height: verticalSpacing),
             ],
           ),

@@ -4,6 +4,7 @@ import 'package:current_affairs/views/BookMarkAndReminder/saveOwnQus/saved_qus_s
 import 'package:current_affairs/views/auth/login/login_screen.dart';
 import 'package:current_affairs/views/auth/signUp/sign_screen.dart';
 import 'package:current_affairs/views/notifications/notifications_screen.dart';
+import 'package:current_affairs/views/profile/aboutApp/about_app_screen.dart';
 import 'package:flutter/widgets.dart';
 
 class AppRoutes {
@@ -13,6 +14,9 @@ class AppRoutes {
   static const String entry = 'Entry';
   static const String notification = 'notification';
   static const String savedOwnQus = 'savedOwnQus';
+  static const String aboutApp = 'aboutApp';
+  static const String signUp = 'signUp';
+  static const String loginScreen = 'loginScreen';
 
   static Map<String, WidgetBuilder> routes = {
     home: (context) => AffairScreen(),
@@ -21,5 +25,8 @@ class AppRoutes {
     entry: (context) => EntryScreen(),
     notification: (context) => NotificationsScreen(),
     savedOwnQus: (context) => SavedQusScreen(),
+    aboutApp: (context) => AboutAppScreen(),
+    signUp: (context) => SignUpScreen(),
+    loginScreen: (context) => LoginScreen(),
   };
 }

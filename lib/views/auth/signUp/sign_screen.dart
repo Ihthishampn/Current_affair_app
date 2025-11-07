@@ -1,8 +1,27 @@
+import 'package:current_affairs/views/auth/widgets/old_acc_row.dart';
+import 'package:current_affairs/views/auth/widgets/sign_up_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
 
-class SignUpScreen extends StatelessWidget {
+class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passController = TextEditingController();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    nameController.dispose();
+    emailController.dispose();
+    passController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,253 +31,134 @@ class SignUpScreen extends StatelessWidget {
     final double verticalSpacing = size.height * 0.02;
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(
-        255,
-        42,
-        42,
-        42,
-      ), // Instagram-like solid black background
-      body: Center(
-        child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(
-            horizontal: horizontalPadding,
-            vertical: verticalSpacing,
+      backgroundColor: const Color(0xFF1C1C1C),
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.symmetric(
+              horizontal: horizontalPadding,
+              vertical: verticalSpacing,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                // Welcome header
+                Text(
+                  'Welcome',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: isSmallScreen ? 28 : 32,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  'Sign Up to start learning current affairs',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: isSmallScreen ? 14 : 16,
+                    color: Colors.white70,
+                  ),
+                ),
+                SizedBox(height: verticalSpacing * 2),
+
+                // Form container
+                Container(
+                  padding: EdgeInsets.all(isSmallScreen ? 20 : 24),
+                  decoration: BoxDecoration(
+                    color: Colors.grey[900],
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.4),
+                        blurRadius: 16,
+                        offset: const Offset(0, 8),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _buildTextField(
+                        type: TextInputType.name,
+                        controller: nameController,
+                        label: 'Username',
+                        hint: 'Enter your username',
+                        icon: Icons.person_outline,
+                      ),
+                      SizedBox(height: verticalSpacing),
+                      _buildTextField(
+                        type: TextInputType.emailAddress,
+                        controller: emailController,
+                        label: 'Email',
+                        hint: 'Enter your email',
+                        icon: Icons.email_outlined,
+                      ),
+                      SizedBox(height: verticalSpacing),
+                      _buildTextField(
+                        type: TextInputType.visiblePassword,
+                        controller: passController,
+                        label: 'Password',
+                        hint: 'Enter your password',
+                        icon: Icons.lock_outline,
+                        obscureText: true,
+                      ),
+                      SizedBox(height: verticalSpacing * 1.2),
+                      // sign up
+                      SignUpButton(
+                        emailc: emailController,
+                        passc: passController,
+                        namec: nameController,
+                      ),
+                      SizedBox(height: verticalSpacing),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: verticalSpacing * 1.5),
+                // old acc login
+                OldAccRow(),
+              ],
+            ),
           ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Welcome message
-              Text(
-                'Welcome',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: isSmallScreen ? 28 : 32,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  letterSpacing: 0.5,
-                ),
-              ),
-              const SizedBox(height: 8),
-              Text(
-                'Sign Up to continue',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: isSmallScreen ? 14 : 16,
-                  color: Colors.white.withOpacity(0.9),
-                ),
-              ),
-              SizedBox(height: verticalSpacing * 2),
+        ),
+      ),
+    );
+  }
 
-              // Form container
-              Container(
-                padding: EdgeInsets.all(isSmallScreen ? 20 : 24),
-                decoration: BoxDecoration(
-                  color: Colors.grey[900], // Dark card color
-                  borderRadius: BorderRadius.circular(18),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.25),
-                      blurRadius: 16,
-                      offset: Offset(0, 6),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    TextField(
-                      style: TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        labelText: 'User Name',
-                        labelStyle: TextStyle(color: Colors.white70),
-                        hintText: 'Enter your User Name',
-                        hintStyle: TextStyle(color: Colors.white38),
-                        prefixIcon: Icon(
-                          Icons.email_outlined,
-                          color: Colors.white70,
-                        ),
-                        filled: true,
-                        fillColor: Colors.grey[850],
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: Colors.transparent),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                            width: 1.5,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: Colors.transparent),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: verticalSpacing),
-
-                    TextField(
-                      style: TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        labelText: 'Email',
-                        labelStyle: TextStyle(color: Colors.white70),
-                        hintText: 'Enter your email',
-                        hintStyle: TextStyle(color: Colors.white38),
-                        prefixIcon: Icon(
-                          Icons.email_outlined,
-                          color: Colors.white70,
-                        ),
-                        filled: true,
-                        fillColor: Colors.grey[850],
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: Colors.transparent),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                            width: 1.5,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: Colors.transparent),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: verticalSpacing),
-                    TextField(
-                      obscureText: true,
-                      style: TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        labelStyle: TextStyle(color: Colors.white70),
-                        hintText: 'Enter your password',
-                        hintStyle: TextStyle(color: Colors.white38),
-                        prefixIcon: Icon(
-                          Icons.lock_outline,
-                          color: Colors.white70,
-                        ),
-                        suffixIcon: Icon(
-                          Icons.visibility_outlined,
-                          color: Colors.white38,
-                        ),
-                        filled: true,
-                        fillColor: Colors.grey[850],
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: Colors.transparent),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
-                            color: Colors.white,
-                            width: 1.5,
-                          ),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(color: Colors.transparent),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: verticalSpacing * 0.7),
-
-                    SizedBox(height: verticalSpacing),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.black,
-                        padding: EdgeInsets.symmetric(
-                          vertical: isSmallScreen ? 14 : 16,
-                        ),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        elevation: 2,
-                      ),
-                      child: Text(
-                        'Sign Up',
-                        style: TextStyle(
-                          fontSize: isSmallScreen ? 15 : 17,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 0.4,
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: verticalSpacing * 1.2),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Divider(color: Colors.white12, thickness: 1),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: Text(
-                            'OR',
-                            style: TextStyle(
-                              color: Colors.white38,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Divider(color: Colors.white12, thickness: 1),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: verticalSpacing * 1.2),
-                    SizedBox(
-                      height: 38, // smaller height
-                      child: SignInButton(
-                        Buttons.Google,
-                        text: "Sign up with Google",
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 2,
-                        ),
-                        onPressed: () {},
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: verticalSpacing * 1.4),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'New here? ',
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.9),
-                      fontSize: isSmallScreen ? 14 : 15,
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      minimumSize: const Size(0, 0),
-                    ),
-                    child: Text(
-                      'Sign up',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: isSmallScreen ? 14 : 15,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: verticalSpacing),
-            ],
+  // Reusable TextField builder
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String label,
+    required TextInputType type,
+    required String hint,
+    required IconData icon,
+    bool obscureText = false,
+  }) {
+    return TextField(
+      keyboardType: type,
+      controller: controller,
+      obscureText: obscureText,
+      style: const TextStyle(color: Colors.white),
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: const TextStyle(color: Colors.white70),
+        hintText: hint,
+        hintStyle: const TextStyle(color: Colors.white38),
+        prefixIcon: Icon(icon, color: Colors.white70),
+        filled: true,
+        fillColor: const Color(0xFF2C2C2C),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: const BorderSide(
+            color: Colors.deepPurpleAccent,
+            width: 1.5,
           ),
         ),
       ),

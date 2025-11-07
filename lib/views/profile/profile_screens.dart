@@ -1,4 +1,6 @@
 import 'package:current_affairs/services/local_auth_services/local_authServices.dart';
+import 'package:current_affairs/views/profile/aboutApp/about_app_screen.dart';
+import 'package:current_affairs/views/profile/privacy_screen/privacy_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:current_affairs/core/colors.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -92,11 +94,11 @@ class _ProfileScreensState extends State<ProfileScreens> {
     final String email = 'ihthishampno19@gmail.com';
     final String subject = 'Feature Request / Message';
     final String body = 'Hi Ihthisham,\n\nI would like to suggest...';
-    
+
     final Uri emailLaunchUri = Uri.parse(
-      'mailto:$email?subject=${Uri.encodeComponent(subject)}&body=${Uri.encodeComponent(body)}'
+      'mailto:$email?subject=${Uri.encodeComponent(subject)}&body=${Uri.encodeComponent(body)}',
     );
-    
+
     try {
       final canLaunch = await canLaunchUrl(emailLaunchUri);
       if (canLaunch) {
@@ -104,7 +106,7 @@ class _ProfileScreensState extends State<ProfileScreens> {
           emailLaunchUri,
           mode: LaunchMode.externalApplication,
         );
-        
+
         if (!launched && mounted) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -164,19 +166,27 @@ class _ProfileScreensState extends State<ProfileScreens> {
                     children: [
                       Container(
                         padding: const EdgeInsets.all(6),
-                        decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          shape: BoxShape.rectangle,
                           gradient: LinearGradient(
                             colors: [primary1, primary2],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
                         ),
-                        child: const CircleAvatar(
-                          backgroundColor: Colors.white,
-                          radius: 45,
-                          backgroundImage: AssetImage(
-                            'assets/images/generated-image__1_-removebg-preview.png',
+                        child: Container(
+                          width: double.infinity,
+                          height:
+                              MediaQuery.of(context).size.height *
+                              0.10, // 25% of screen height
+                          decoration: const BoxDecoration(
+                            image: DecorationImage(
+                              image: AssetImage(
+                                'assets/images/generated-image__1_-removebg-preview.png',
+                              ),
+                              fit: BoxFit.contain,
+                            ),
                           ),
                         ),
                       ),
@@ -257,12 +267,34 @@ class _ProfileScreensState extends State<ProfileScreens> {
                     child: Column(
                       children: [
                         _buildTile(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              PageRouteBuilder(
+                                pageBuilder: (_, __, ___) =>
+                                    const AboutAppScreen(),
+                                transitionDuration: Duration.zero,
+                                reverseTransitionDuration: Duration.zero,
+                              ),
+                            );
+                          },
+
                           Icons.info_outline,
                           'About App',
                           showDivider: true,
                           isInsideColoredCard: true,
                         ),
                         _buildTile(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              PageRouteBuilder(
+                                pageBuilder: (_, __, ___) =>
+                                    const PrivacyScreen(),
+                                transitionDuration: Duration.zero,
+                                reverseTransitionDuration: Duration.zero,
+                              ),
+                            );
+                          },
+
                           Icons.privacy_tip_outlined,
                           'Privacy Policy',
                           isInsideColoredCard: true,
