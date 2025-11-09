@@ -1,8 +1,12 @@
+import 'package:current_affairs/models/noti_model_firebase_login/noti_loigin_firebase_model.dart';
 import 'package:current_affairs/services/auth/sign_up_services.dart';
+import 'package:current_affairs/services/login_firebase_notification.dart/login_firebase_notification.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/widgets.dart';
 
 class SignInProvider extends ChangeNotifier {
+  final LoginFirebaseNotificationServices _firebaseNotificationServices =
+      LoginFirebaseNotificationServices();
   final SignUpServices _services = SignUpServices();
 
   bool isLoading = false;
@@ -13,6 +17,7 @@ class SignInProvider extends ChangeNotifier {
     required String name,
     required String email,
     required String password,
+    required NotiLoiginFirebaseModel model,
   }) async {
     isLoading = true;
     success = false;
@@ -22,6 +27,7 @@ class SignInProvider extends ChangeNotifier {
     try {
       await _services.signUp(name: name, email: email, password: password);
       success = true;
+      await _firebaseNotificationServices.loginNotificationAdd(model);
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case 'email-already-in-use':

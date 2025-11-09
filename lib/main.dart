@@ -9,10 +9,12 @@ import 'package:current_affairs/entry/entry.dart';
   import 'package:current_affairs/routes/routes.dart';
   import 'package:current_affairs/services/local_auth_services/local_authServices.dart';
   import 'package:current_affairs/services/notifications/notification_services.dart';
+import 'package:current_affairs/viewmodels/affair/affair_provider.dart';
   import 'package:current_affairs/viewmodels/auth/login/forget+provider.dart';
   import 'package:current_affairs/viewmodels/auth/login/login_provider.dart';
   import 'package:current_affairs/viewmodels/auth/signin/sign_in_provider.dart';
   import 'package:current_affairs/viewmodels/navigationPrvider/navProvider.dart';
+import 'package:current_affairs/viewmodels/noti/noti_provider.dart';
   import 'package:current_affairs/viewmodels/own_add_qus/own_add_qus_provider.dart';
   import 'package:current_affairs/viewmodels/tasks/task_prvider.dart';
 import 'package:current_affairs/views/auth/login/login_screen.dart';
@@ -47,6 +49,8 @@ import 'package:firebase_auth/firebase_auth.dart';
           ChangeNotifierProvider(create: (context) => OwnAddQusProvider()),
           ChangeNotifierProvider(create: (context) => SignInProvider()),
           ChangeNotifierProvider(create: (context) => LoginProvider()),
+          ChangeNotifierProvider(create: (context) => NotiProvider()),
+          ChangeNotifierProvider(create: (context) => AffairProvider()),
           // ChangeNotifierProvider(create: (context) => ForgetPasswordProvider()),
         ],
         child: MaterialApp(

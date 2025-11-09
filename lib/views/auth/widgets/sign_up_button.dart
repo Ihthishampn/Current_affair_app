@@ -1,9 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:current_affairs/models/noti_model_firebase_login/noti_loigin_firebase_model.dart';
 import 'package:current_affairs/viewmodels/auth/signin/sign_in_provider.dart';
 import 'package:current_affairs/views/auth/login/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
-  
 
 class SignUpButton extends StatelessWidget {
   final TextEditingController namec;
@@ -28,12 +28,22 @@ class SignUpButton extends StatelessWidget {
 
         if (name.isEmpty || email.isEmpty || pass.isEmpty) {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text('All fields are required')));
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('All fields are required')));
           return;
         }
 
-        await provider.signUp(name: name, email: email, password: pass);
+        await provider.signUp(
+          name: name,
+          email: email,
+          password: pass,
+          model: NotiLoiginFirebaseModel(
+            title: 'Your account was created successfully',
+            isRead: false,
+            time: Timestamp.now(),
+          ),
+        );
 
         if (provider.success) {
           namec.clear();
@@ -56,8 +66,9 @@ class SignUpButton extends StatelessWidget {
           );
         } else {
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text(provider.error)));
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(provider.error)));
         }
       },
       style: ElevatedButton.styleFrom(
@@ -81,4 +92,3 @@ class SignUpButton extends StatelessWidget {
     );
   }
 }
-

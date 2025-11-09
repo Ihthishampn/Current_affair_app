@@ -1,100 +1,157 @@
 import 'package:current_affairs/core/colors.dart';
-import 'package:current_affairs/routes/routes.dart';
-import 'package:current_affairs/views/Affairs/widgets/header_refresh_widgets.dart';
+import 'package:current_affairs/viewmodels/affair/affair_provider.dart';
+import 'package:current_affairs/viewmodels/noti/noti_provider.dart';
 import 'package:current_affairs/views/Affairs/widgets/qus_card.dart';
 import 'package:current_affairs/views/notifications/notifications_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class AffairScreen extends StatelessWidget {
+class AffairScreen extends StatefulWidget {
   const AffairScreen({super.key});
+
+  @override
+  State<AffairScreen> createState() => _AffairScreenState();
+}
+
+class _AffairScreenState extends State<AffairScreen> {
+  final ScrollController scroll = ScrollController();
+  late final NotiProvider notiProvider;
+  late final AffairProvider affairProvider;
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      notiProvider = context.read<NotiProvider>();
+      notiProvider.hadleNoti();
+
+      affairProvider = context.read<AffairProvider>();
+      affairProvider.loadInitial(); // load first batch here
+    });
+
+    scroll.addListener(_onScroll);
+  }
+
+  void _onScroll() {
+    if (scroll.position.pixels >= scroll.position.maxScrollExtent - 150) {
+      affairProvider.loadMore(); // use stored reference, no lookup
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.bgcolor,
-        title: Text('Current Affairs'),
+        title: const Text('Current Affairs'),
         actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                PageRouteBuilder(
-                  transitionDuration: const Duration(milliseconds: 400),
-                  reverseTransitionDuration: const Duration(milliseconds: 300),
-                  pageBuilder: (_, animation, __) {
-                    return const NotificationsScreen();
-                  },
-                  transitionsBuilder: (_, animation, __, child) {
-                    return FadeTransition(
-                      // small fade helps hide any flash
-                      opacity: animation,
-                      child: SlideTransition(
-                        position:
-                            Tween(
-                              begin: const Offset(1, 0),
-                              end: Offset.zero,
-                            ).animate(
-                              CurvedAnimation(
-                                parent: animation,
-                                curve: Curves.easeInOut,
-                              ),
-                            ),
-                        child: child,
+          Consumer<NotiProvider>(
+            builder: (context, provider, child) {
+              final hasUnread = provider.notiLists.any(
+                (n) => n.isRead == false,
+              );
+
+              return Stack(
+                children: [
+                  IconButton(
+                    onPressed: () {
+                      final page = const NotificationsScreen(); // PREBUILD
+
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          transitionDuration: const Duration(milliseconds: 260),
+                          reverseTransitionDuration: const Duration(
+                            milliseconds: 200,
+                          ),
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) => page,
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                                final slide =
+                                    Tween(
+                                      begin: const Offset(
+                                        0.12,
+                                        0,
+                                      ), // small slide = smooth
+                                      end: Offset.zero,
+                                    ).animate(
+                                      CurvedAnimation(
+                                        parent: animation,
+                                        curve: Curves.easeOutCubic,
+                                      ),
+                                    );
+
+                                // Fade + Slide to hide the frame hitch
+                                final fade = Tween<double>(begin: 0.0, end: 1.0)
+                                    .animate(
+                                      CurvedAnimation(
+                                        parent: animation,
+                                        curve: Curves.easeOut,
+                                      ),
+                                    );
+
+                                return FadeTransition(
+                                  opacity: fade,
+                                  child: SlideTransition(
+                                    position: slide,
+                                    child: child,
+                                  ),
+                                );
+                              },
+                        ),
+                      );
+                    },
+                    icon: const Icon(Icons.notifications),
+                  ),
+
+                  if (hasUnread)
+                    Positioned(
+                      right: 8,
+                      top: 8,
+                      child: Container(
+                        width: 10,
+                        height: 10,
+                        decoration: const BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
                       ),
-                    );
-                  },
-                ),
+                    ),
+                ],
               );
             },
-            icon: const Icon(Icons.notifications),
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            // header refresh widgets
-            Padding(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical: 10,
-              ),
-              child: HeaderRefreshWidgets(),
-            ),
 
-            //---------------------------
-            const SizedBox(height: 12),
+      body: Consumer<AffairProvider>(
+        builder: (context, pro, child) {
+          if (pro.isInitialLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
 
-            // headin explore
-            Padding(
-              padding: const EdgeInsets.only(left: 17),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  'Explore Questians',
-                  style: TextStyle(fontSize: 17),
-                ),
-              ),
-            ),
-
-            //---------------------------------
-            const SizedBox(height: 12),
-
-            const Divider(indent: 30, endIndent: 30, thickness: 0.2),
-
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemCount: 6,
-              itemBuilder: (context, index) => const QuestionCard(
-                category: 'History',
-                question: 'Who was the first President of India?',
-                answer: 'Dr. Rajendra Prasad',
-              ),
-            ),
-          ],
-        ),
+          return ListView.builder(
+            controller: scroll, // IMPORTANT
+            padding: const EdgeInsets.symmetric(vertical: 10),
+           itemCount: pro.questions.length + (pro.isLoadMore ? 1 : 0),
+itemBuilder: (context, index) {
+  if (index < pro.questions.length) {
+    final q = pro.questions[index];
+    return QuestionCard(
+      category: q.category,
+      question: q.question,
+      answer: q.correctAnswer,
+    );
+  } else {
+    return const Padding(
+      padding: EdgeInsets.all(16),
+      child: Center(child: CircularProgressIndicator()),
+    );
+  }
+},
+          );
+        },
       ),
     );
   }

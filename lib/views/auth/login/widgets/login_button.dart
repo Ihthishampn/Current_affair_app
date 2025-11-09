@@ -1,6 +1,8 @@
 // LoginButton.dart
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:current_affairs/entry/entry.dart';
 import 'package:current_affairs/main.dart';
+import 'package:current_affairs/models/noti_model_firebase_login/noti_loigin_firebase_model.dart';
 import 'package:current_affairs/viewmodels/auth/login/login_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -101,7 +103,7 @@ class LoginButton extends StatelessWidget {
                   _showInfoMessage(context, 'Signing you in...');
 
                   // Perform login
-                  await provider.loginHandle(email: email, pass: pass);
+                  await provider.loginHandle(email: email, pass: pass,model: NotiLoiginFirebaseModel(title: 'Welcome,You’re Logged In', isRead: false, time: Timestamp.now()));
 
                   // Check result AFTER login completes
                   if (provider.success) {
@@ -112,7 +114,7 @@ class LoginButton extends StatelessWidget {
                     // Navigate after a short delay
                     Future.delayed(const Duration(milliseconds: 200), () {
                       if (context.mounted) {
-                        Navigator.of(context).pushReplacement(
+                        Navigator.of(context).pushReplacement(        
                           MaterialPageRoute(builder: (_) => const AuthCheckScreen()),
                         );
                       }
