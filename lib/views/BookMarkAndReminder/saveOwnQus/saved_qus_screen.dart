@@ -322,9 +322,9 @@ class _SavedQusScreenState extends State<SavedQusScreen>
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    Color(0xFF6366F1), // Indigo
-                    Color(0xFF8B5CF6), // Purple
-                    Color(0xFFA855F7), // Fuchsia
+                    Color(0xFF6366F1), 
+                    Color(0xFF8B5CF6),
+                    Color(0xFFA855F7), 
                   ],
                 ),
                 boxShadow: [
@@ -366,7 +366,7 @@ class _SavedQusScreenState extends State<SavedQusScreen>
             ),
           ),
 
-          // Blue Explosion Ripples
+          // Blue Explosion 
           AnimatedBuilder(
             animation: _explosionController,
             builder: (context, child) {

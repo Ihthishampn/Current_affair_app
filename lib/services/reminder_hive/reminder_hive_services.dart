@@ -39,7 +39,6 @@ Future<Box<ReminderModel>> getBox() async {
     if (reminder != null) {
       // cancel scheduled notifications
       final notificationService = NotificationServices();
-      // ensure notification plugin is initialized before cancelling
       await notificationService.initNotification();
       await notificationService.cancelMultiple(reminder.notificationIds);
       await box.deleteAt(index);

@@ -1,5 +1,6 @@
 import 'package:current_affairs/core/colors.dart';
 import 'package:current_affairs/viewmodels/affair/affair_provider.dart';
+import 'package:current_affairs/viewmodels/bookmark/bookmark_provider.dart';
 import 'package:current_affairs/viewmodels/noti/noti_provider.dart';
 import 'package:current_affairs/views/Affairs/widgets/qus_card.dart';
 import 'package:current_affairs/views/notifications/notifications_screen.dart';
@@ -21,12 +22,15 @@ class _AffairScreenState extends State<AffairScreen> {
   void initState() {
     super.initState();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
       notiProvider = context.read<NotiProvider>();
       notiProvider.hadleNoti();
+      context.read<BookmarkProvider>().initBookmarks();
 
       affairProvider = context.read<AffairProvider>();
-      affairProvider.loadInitial(); // load first batch here
+      if (affairProvider.questions.isEmpty) {
+        affairProvider.loadInitial();
+      }
     });
 
     scroll.addListener(_onScroll);
@@ -34,7 +38,7 @@ class _AffairScreenState extends State<AffairScreen> {
 
   void _onScroll() {
     if (scroll.position.pixels >= scroll.position.maxScrollExtent - 150) {
-      affairProvider.loadMore(); // use stored reference, no lookup
+      affairProvider.loadMore(); 
     }
   }
 
@@ -45,6 +49,23 @@ class _AffairScreenState extends State<AffairScreen> {
         backgroundColor: AppColors.bgcolor,
         title: const Text('Current Affairs'),
         actions: [
+          IconButton(
+            onPressed: () {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: const Text(
+                    'Only Pro users can refresh the questions to get the latest current affairs every day. Everyone else can view existing questions.',
+                  ),
+                  duration: const Duration(seconds: 4),
+                  behavior: SnackBarBehavior.floating,
+                  margin: const EdgeInsets.all(16),
+                  backgroundColor: Colors.red.shade700,
+                ),
+              );
+            },
+            icon: Icon(Icons.refresh),
+          ),
           Consumer<NotiProvider>(
             builder: (context, provider, child) {
               final hasUnread = provider.notiLists.any(
@@ -55,7 +76,7 @@ class _AffairScreenState extends State<AffairScreen> {
                 children: [
                   IconButton(
                     onPressed: () {
-                      final page = const NotificationsScreen(); // PREBUILD
+                      final page = const NotificationsScreen();
 
                       Navigator.push(
                         context,
@@ -73,7 +94,7 @@ class _AffairScreenState extends State<AffairScreen> {
                                       begin: const Offset(
                                         0.12,
                                         0,
-                                      ), // small slide = smooth
+                                      ), 
                                       end: Offset.zero,
                                     ).animate(
                                       CurvedAnimation(
@@ -82,7 +103,6 @@ class _AffairScreenState extends State<AffairScreen> {
                                       ),
                                     );
 
-                                // Fade + Slide to hide the frame hitch
                                 final fade = Tween<double>(begin: 0.0, end: 1.0)
                                     .animate(
                                       CurvedAnimation(
@@ -132,24 +152,26 @@ class _AffairScreenState extends State<AffairScreen> {
           }
 
           return ListView.builder(
-            controller: scroll, // IMPORTANT
+            controller: scroll, 
             padding: const EdgeInsets.symmetric(vertical: 10),
-           itemCount: pro.questions.length + (pro.isLoadMore ? 1 : 0),
-itemBuilder: (context, index) {
-  if (index < pro.questions.length) {
-    final q = pro.questions[index];
-    return QuestionCard(
-      category: q.category,
-      question: q.question,
-      answer: q.correctAnswer,
-    );
-  } else {
-    return const Padding(
-      padding: EdgeInsets.all(16),
-      child: Center(child: CircularProgressIndicator()),
-    );
-  }
-},
+            itemCount: pro.questions.length + (pro.isLoadMore ? 1 : 0),
+            itemBuilder: (context, index) {
+              if (index < pro.questions.length) {
+                final q = pro.questions[index];
+                return QuestionCard(
+                  correctAnswer: q.correctAnswer,
+                  options: q.options,
+                  category: q.category,
+                  question: q.question,
+                  id: q.id,
+                );
+              } else {
+                return const Padding(
+                  padding: EdgeInsets.all(16),
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              }
+            },
           );
         },
       ),

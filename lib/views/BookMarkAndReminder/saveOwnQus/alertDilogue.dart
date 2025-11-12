@@ -101,13 +101,11 @@ class _QuestionDialogState extends State<QuestionDialog>
                   );
                 }),
 
-                // Main content
                 Padding(
                   padding: const EdgeInsets.all(24.0),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Header with animated icon
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -162,7 +160,6 @@ class _QuestionDialogState extends State<QuestionDialog>
 
                       const SizedBox(height: 24),
 
-                      // Question input with animation
                       TweenAnimationBuilder<double>(
                         tween: Tween(begin: 0.0, end: 1.0),
                         duration: const Duration(milliseconds: 600),
@@ -180,7 +177,7 @@ class _QuestionDialogState extends State<QuestionDialog>
 
                       const SizedBox(height: 16),
 
-                      // Answer input with delayed animation
+                      // Answer
                       TweenAnimationBuilder<double>(
                         tween: Tween(begin: 0.0, end: 1.0),
                         duration: const Duration(milliseconds: 600),
@@ -200,7 +197,7 @@ class _QuestionDialogState extends State<QuestionDialog>
 
                       const SizedBox(height: 20),
 
-                      // Action buttons
+                      //  buttons
                       Row(
                         children: [
                           Expanded(

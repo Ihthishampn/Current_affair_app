@@ -17,8 +17,7 @@ class NotiProvider extends ChangeNotifier {
 
   bool get hasUnread => notiLists.any((e) => e.isRead == false);
 
-  // handle noti
-  //
+
   void hadleNoti() async {
     isLoading = true;
     isRead = true;
@@ -44,7 +43,6 @@ class NotiProvider extends ChangeNotifier {
 
   Future<void> clearAllNoti() async {
     try {
-      // delete from firestore if needed
       final uid = _auth.currentUser!.uid;
       final ref = _firestore
           .collection("User_notifications")

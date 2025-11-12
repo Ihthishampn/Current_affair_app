@@ -1,6 +1,7 @@
 import 'package:current_affairs/models/reminder/reminder_model.dart';
 import 'package:current_affairs/services/notifications/notification_services.dart';
 import 'package:current_affairs/services/reminder_hive/reminder_hive_services.dart';
+import 'package:current_affairs/views/BookMarkAndReminder/bookMark/book_mark_qus.dart';
 import 'package:current_affairs/views/BookMarkAndReminder/saveOwnQus/saved_qus_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:current_affairs/core/colors.dart';
@@ -296,8 +297,23 @@ class _SavedScreenState extends State<SavedScreen>
                 child: Column(
                   children: [
                     Savedandaddquscustumwidget(
-                      onTap: () {},
-                      title: "Saved Questions",
+                      onTap: () { Navigator.of(context).push(
+                          PageRouteBuilder(
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    const BookMarkQus(),
+                            transitionsBuilder:
+                                (
+                                  context,
+                                  animation,
+                                  secondaryAnimation,
+                                  child,
+                                ) => child,
+                            transitionDuration: Duration.zero,
+                            reverseTransitionDuration: Duration.zero,
+                          ),
+                        );},
+                      title: "Book Mark",
                       icon: Icons.bookmark_rounded,
                       color1: const Color(0xFF2196F3),
                       color2: const Color(0xFF64B5F6),

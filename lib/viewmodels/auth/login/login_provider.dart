@@ -37,19 +37,16 @@ class LoginProvider extends ChangeNotifier {
         success = false;
         error = 'Login failed. Try again.';
       } else {
-        // Reload to get the latest email verification status
         await user.reload();
         final updatedUser = FirebaseAuth.instance.currentUser;
 
         if (updatedUser != null && updatedUser.emailVerified) {
-          // Email is verified - allow login
           success = true;
           error = '';
 
           // noti
           await _loginFirebaseNotificationServices.loginNotificationAdd(model);
         } else {
-          // Email NOT verified - sign out and show error
           await FirebaseAuth.instance.signOut();
           success = false;
           error =
@@ -59,7 +56,6 @@ class LoginProvider extends ChangeNotifier {
     } on FirebaseAuthException catch (e) {
       success = false;
 
-      // Firebase v6+ merges wrong-password & user-not-found into invalid-credential
       if (e.code == 'invalid-credential' || e.code == 'wrong-password') {
         error =
             'Email or password is incorrect. If you are new, please sign up.';

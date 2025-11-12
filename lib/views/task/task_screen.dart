@@ -14,7 +14,7 @@ class TaskManagerScreen extends StatefulWidget {
 }
 
 class _TaskManagerScreenState extends State<TaskManagerScreen> {
-  String filter = 'All'; // All, Completed, Pending
+  String filter = 'All'; 
 
   @override
   Widget build(BuildContext context) {

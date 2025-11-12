@@ -61,7 +61,6 @@ class SignInProvider extends ChangeNotifier {
     }
   }
 
-  // Resend verification email
   Future<void> resendVerification() async {
     final user = FirebaseAuth.instance.currentUser;
     if (user != null && !user.emailVerified) {

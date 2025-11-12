@@ -19,7 +19,7 @@ class ReminderModel extends HiveObject {
   @HiveField(4)
   final List<int> notificationIds;
 
-  int? hiveKey; // 👈 runtime key, not stored in Hive
+  int? hiveKey; // runtime key, so its not stored in Hive  (ith shredhikannam)
 
   ReminderModel({
     required this.content,

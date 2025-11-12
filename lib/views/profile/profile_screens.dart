@@ -239,7 +239,6 @@ class _ProfileScreensState extends State<ProfileScreens> {
                   ),
                   const SizedBox(height: 16),
 
-                  // Send Message
                   _buildTile(
                     Icons.message_outlined,
                     'Send Message / Request Feature',
@@ -354,7 +353,21 @@ class _ProfileScreensState extends State<ProfileScreens> {
                           ),
                         ),
                         ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  'You cannot upgrade to Pro at this time.',
+                                  style: TextStyle(
+                                    color: Colors.redAccent,
+                                    fontSize: 16,
+                                  ),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,
                             foregroundColor: primary1,
@@ -377,7 +390,6 @@ class _ProfileScreensState extends State<ProfileScreens> {
     );
   }
 
-  // helper for tile
   Widget _buildTile(
     IconData icon,
     String title, {

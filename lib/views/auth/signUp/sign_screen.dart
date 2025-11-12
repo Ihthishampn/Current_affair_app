@@ -16,7 +16,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     nameController.dispose();
     emailController.dispose();
@@ -64,7 +63,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 ),
                 SizedBox(height: verticalSpacing * 2),
 
-                // Form container
                 Container(
                   padding: EdgeInsets.all(isSmallScreen ? 20 : 24),
                   decoration: BoxDecoration(
@@ -128,7 +126,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     );
   }
 
-  // Reusable TextField builder
   Widget _buildTextField({
     required TextEditingController controller,
     required String label,

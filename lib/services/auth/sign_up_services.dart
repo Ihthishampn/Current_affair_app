@@ -30,7 +30,6 @@ class SignUpServices {
           .doc(uid)
           .set(signUpData.toFirebase());
 
-      // Send email verification
       await userCredential.user!.sendEmailVerification();
     } on FirebaseAuthException catch (e) {
       print('FirebaseAuth Error: $e');

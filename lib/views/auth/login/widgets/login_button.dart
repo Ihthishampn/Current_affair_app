@@ -1,9 +1,8 @@
 // LoginButton.dart
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:current_affairs/entry/entry.dart';
-import 'package:current_affairs/main.dart';
 import 'package:current_affairs/models/noti_model_firebase_login/noti_loigin_firebase_model.dart';
 import 'package:current_affairs/viewmodels/auth/login/login_provider.dart';
+import 'package:current_affairs/views/authCheckSreen/authCheckScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

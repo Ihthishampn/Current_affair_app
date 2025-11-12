@@ -36,7 +36,7 @@ class _LoginScreenState extends State<LoginScreen> {
         42,
         42,
         42,
-      ), // Instagram-like solid black background
+      ), 
       body: Center(
         child: SingleChildScrollView(
           padding: EdgeInsets.symmetric(
@@ -46,7 +46,6 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Welcome message
               Text(
                 'Welcome Back',
                 textAlign: TextAlign.center,
@@ -68,7 +67,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               SizedBox(height: verticalSpacing * 2),
 
-              // Form container
               Container(
                 padding: EdgeInsets.all(isSmallScreen ? 20 : 24),
                 decoration: BoxDecoration(
@@ -101,7 +99,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               SizedBox(height: verticalSpacing * 1.4),
-              //new here row
               Newhererow(),
               SizedBox(height: verticalSpacing),
             ],

@@ -88,7 +88,6 @@ class PrivacyScreen extends StatelessWidget {
     );
   }
 
-  // helper methods
   Widget _sectionTitle(String title) {
     return Text(
       title,

@@ -10,7 +10,6 @@
     String error = '';
     bool isDone = false;
 
-    // id one toggle logic
   Future<void> togleChange(bool val, Ownaddqus qus) async {
     final box = Hive.box<Ownaddqus>('OwnAddQus');
     qus.status = val;
@@ -31,7 +30,6 @@
 
 
 
-    // refresh List
 
     Future<void> getQus() async {
       loading = true;

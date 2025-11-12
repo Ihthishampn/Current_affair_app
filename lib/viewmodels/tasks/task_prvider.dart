@@ -24,7 +24,8 @@ class TaskPrvider extends ChangeNotifier {
     try {
       taskLists.clear();
       final task = await taskHiveServices.getHiveTaskValues();
-      taskLists.addAll(task.reversed); // newest first
+      // new first nnnnnnnnnnnn
+      taskLists.addAll(task.reversed); 
     } catch (e) {
       error = e.toString();
     } finally {
@@ -45,7 +46,10 @@ class TaskPrvider extends ChangeNotifier {
   Future<void> toggleCompleted(bool val, int index) async {
     final task = taskLists[index];
     task.completed = val;
-    await task.save(); // directly update Hive record
+     // directly update Hive record
+
+    await task.save();
+    
     notifyListeners();
   }
 
@@ -56,7 +60,7 @@ class TaskPrvider extends ChangeNotifier {
 
 Future<void> deleteTask(int index) async {
   final box = await taskHiveServices.tasksBox;
-  final key = box.keyAt(index); // Get actual Hive key
+  final key = box.keyAt(index); 
   await taskHiveServices.deleteToHive(key);
 
   taskLists.removeAt(index);

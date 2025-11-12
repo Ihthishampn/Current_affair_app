@@ -8,7 +8,7 @@ class ReminderContainer extends StatelessWidget {
   final String day;
   final String time;
   final Color color;
-  final VoidCallback onDelete; // 👈 callback to refresh list
+  final VoidCallback onDelete;
 
   const ReminderContainer({
     super.key,
@@ -66,7 +66,7 @@ class ReminderContainer extends StatelessWidget {
 
               await NotificationServices().cancel(id);
               await ReminderHiveService().deleteReminderByKey(id);
-              onDelete(); // 👈 refresh UI
+              onDelete(); 
 
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(

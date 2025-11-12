@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class PasswordTextfieldCustom extends StatelessWidget {
   final TextEditingController pass;
-  const PasswordTextfieldCustom({ required this.pass, super.key});
+  const PasswordTextfieldCustom({required this.pass, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,6 @@ class PasswordTextfieldCustom extends StatelessWidget {
         hintText: 'Enter your password',
         hintStyle: TextStyle(color: Colors.white38),
         prefixIcon: Icon(Icons.lock_outline, color: Colors.white70),
-        suffixIcon: Icon(Icons.visibility_outlined, color: Colors.white38),
         filled: true,
         fillColor: Colors.grey[850],
         border: OutlineInputBorder(
